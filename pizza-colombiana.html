@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pizza Colombiana – El Monte</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rojo: #C0392B;
+    --amarillo: #F4C542;
+    --crema: #FDF6EC;
+    --cafe: #3B2314;
+    --cafe-medio: #6B3A2A;
+    --blanco: #FFFDF9;
+    --gris: #8C7B6E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--crema);
+    color: var(--cafe);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 5%;
+    background: rgba(59,35,20,0.95);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--amarillo);
+    letter-spacing: 2px;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--crema);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--amarillo); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: var(--cafe);
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(120px, 20vw, 280px);
+    color: rgba(255,255,255,0.04);
+    line-height: 0.85;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 7%;
+    max-width: 700px;
+    animation: fadeUp 1s ease both;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: var(--amarillo);
+    color: var(--cafe);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 10vw, 110px);
+    color: var(--blanco);
+    line-height: 0.9;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .hero-title span { color: var(--amarillo); }
+
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: rgba(253,246,236,0.75);
+    margin-bottom: 36px;
+    max-width: 420px;
+    line-height: 1.6;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--rojo);
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s, background 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: #a93226; transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--crema);
+    padding: 14px 32px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: 1px solid rgba(253,246,236,0.4);
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+  }
+
+  .btn-outline:hover { border-color: var(--amarillo); color: var(--amarillo); }
+
+  .hero-flags {
+    position: absolute;
+    right: 7%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-end;
+    animation: fadeIn 1.4s ease both;
+  }
+
+  .flag-pill {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 40px;
+    padding: 10px 20px;
+    color: var(--crema);
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(4px);
+  }
+
+  .flag-pill .emoji { font-size: 1.2rem; }
+
+  /* ── SECCIÓN GENERAL ── */
+  section { padding: 90px 7%; }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--rojo);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    color: var(--cafe);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .section-body {
+    color: var(--gris);
+    font-size: 1rem;
+    line-height: 1.75;
+    max-width: 560px;
+  }
+
+  /* ── NOSOTROS ── */
+  #nosotros {
+    background: var(--blanco);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .nosotros-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .stat-card {
+    background: var(--crema);
+    border-radius: 8px;
+    padding: 24px;
+    border-left: 3px solid var(--amarillo);
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    color: var(--rojo);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--gris);
+    margin-top: 4px;
+  }
+
+  .nosotros-visual {
+    position: relative;
+  }
+
+  .nosotros-img-container {
+    background: var(--cafe);
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4/5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .pizza-emoji-big {
+    font-size: 10rem;
+    filter: drop-shadow(0 0 40px rgba(244,197,66,0.3));
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .img-badge {
+    position: absolute;
+    bottom: -16px;
+    left: -16px;
+    background: var(--amarillo);
+    border-radius: 8px;
+    padding: 16px 20px;
+    color: var(--cafe);
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+
+  /* ── MENÚ ── */
+  #menu { background: var(--cafe); }
+  #menu .section-title { color: var(--blanco); }
+  #menu .section-label { color: var(--amarillo); }
+  #menu .section-body { color: rgba(253,246,236,0.65); }
+
+  .menu-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 32px 0 40px;
+  }
+
+  .tab-btn {
+    background: rgba(255,255,255,0.08);
+    color: rgba(253,246,236,0.7);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px 22px;
+    border-radius: 40px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--amarillo);
+    color: var(--cafe);
+    border-color: var(--amarillo);
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .menu-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 22px;
+    transition: transform 0.2s, background 0.2s;
+    display: none;
+  }
+
+  .menu-card.visible { display: block; }
+
+  .menu-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.1);
+  }
+
+  .menu-card-icon { font-size: 2rem; margin-bottom: 10px; }
+
+  .menu-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--blanco);
+    margin-bottom: 6px;
+  }
+
+  .menu-card-desc {
+    font-size: 0.82rem;
+    color: rgba(253,246,236,0.55);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  .menu-card-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--amarillo);
+    letter-spacing: 1px;
+  }
+
+  .menu-card-badge {
+    display: inline-block;
+    background: var(--rojo);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* ── CONTACTO ── */
+  #contacto {
+    background: var(--blanco);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .contact-items { margin-top: 32px; }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(59,35,20,0.08);
+  }
+
+  .contact-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--crema);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .contact-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-bottom: 4px;
+  }
+
+  .contact-value {
+    font-size: 0.95rem;
+    color: var(--cafe);
+    line-height: 1.5;
+  }
+
+  .contact-value a { color: var(--rojo); text-decoration: none; }
+
+  /* ── HORARIOS ── */
+  .horario-table {
+    background: var(--crema);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+
+  .horario-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid rgba(59,35,20,0.06);
+    font-size: 0.9rem;
+  }
+
+  .horario-row:last-child { border-bottom: none; }
+
+  .horario-row .dia { font-weight: 500; }
+  .horario-row .hora { color: var(--gris); }
+  .horario-row.hoy { background: rgba(192,57,43,0.08); }
+  .horario-row.hoy .dia { color: var(--rojo); font-weight: 700; }
+  .horario-row.hoy .hora { color: var(--rojo); }
+
+  /* ── INSTAGRAM ── */
+  #instagram {
+    background: var(--cafe);
+    text-align: center;
+  }
+
+  #instagram .section-title { color: var(--blanco); }
+  #instagram .section-label { color: var(--amarillo); }
+
+  .insta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .insta-tile {
+    aspect-ratio: 1;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    transition: transform 0.2s;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .insta-tile:hover { transform: scale(1.04); }
+
+  .insta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 32px;
+    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  .insta-btn:hover { transform: translateY(-2px); opacity: 0.92; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1a0d07;
+    padding: 40px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--amarillo);
+    letter-spacing: 2px;
+  }
+
+  .footer-text {
+    font-size: 0.8rem;
+    color: rgba(253,246,236,0.4);
+  }
+
+  /* ── ANIMACIONES ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-16px); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    #nosotros, #contacto { grid-template-columns: 1fr; }
+    .hero-flags { display: none; }
+    .insta-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Pizza Colombiana</a>
+  <ul class="nav-links">
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#menu">Menú</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="https://www.instagram.com/elmonte_pizzacolombiana" target="_blank">Instagram</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-text">PIZZA</div>
+  <div class="hero-content">
+    <span class="hero-tag">🇨🇴 El Sabor de Colombia en El Monte</span>
+    <h1 class="hero-title">Pizza<br><span>Colombiana</span></h1>
+    <p class="hero-sub">Pizzas a la piedra, hamburguesas, churrascos, chorrillanas y mucho más. Sabor auténtico, hecho con amor.</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary">Ver Menú</a>
+      <a href="#contacto" class="btn-outline">Cómo llegar</a>
+    </div>
+  </div>
+  <div class="hero-flags">
+    <div class="flag-pill"><span class="emoji">🍕</span> Pizzas a la piedra</div>
+    <div class="flag-pill"><span class="emoji">🍔</span> Hamburguesas</div>
+    <div class="flag-pill"><span class="emoji">🥩</span> Churrascos</div>
+    <div class="flag-pill"><span class="emoji">🍟</span> Chorrillanas</div>
+    <div class="flag-pill"><span class="emoji">🥤</span> Jugos naturales</div>
+    <div class="flag-pill"><span class="emoji">🍺</span> Cervezas</div>
+  </div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div>
+    <p class="section-label">Nuestra Historia</p>
+    <h2 class="section-title">Tradición<br>Colombiana</h2>
+    <p class="section-body">Somos un restaurante con el alma de Colombia en el corazón de El Monte. Nuestras pizzas se elaboran artesanalmente en horno de piedra, con ingredientes frescos y recetas que combinan lo mejor de la cocina colombiana con los sabores que más quieres.</p>
+    <div class="nosotros-stats">
+      <div class="stat-card">
+        <div class="stat-num">4.4</div>
+        <div class="stat-label">⭐ Estrellas promedio (144 reseñas)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">+15</div>
+        <div class="stat-label">🍕 Pizzas en carta</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">12PM</div>
+        <div class="stat-label">🕛 Abrimos desde el mediodía</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">❤️ Hecho con amor colombiano</div>
+      </div>
+    </div>
+  </div>
+  <div class="nosotros-visual">
+    <div class="nosotros-img-container">
+      <div class="pizza-emoji-big">🍕</div>
+    </div>
+    <div class="img-badge">🔥 Horno de piedra artesanal</div>
+  </div>
+</section>
+
+<!-- MENÚ -->
+<section id="menu">
+  <p class="section-label">Lo que ofrecemos</p>
+  <h2 class="section-title">Nuestra Carta</h2>
+  <p class="section-body">Desde pizzas clásicas hasta creaciones con identidad colombiana. Algo para cada antojo.</p>
+
+  <div class="menu-tabs">
+    <button class="tab-btn active" onclick="filterMenu('pizzas')">🍕 Pizzas</button>
+    <button class="tab-btn" onclick="filterMenu('hamburguesas')">🍔 Hamburguesas</button>
+    <button class="tab-btn" onclick="filterMenu('sandwiches')">🥖 Sándwiches</button>
+    <button class="tab-btn" onclick="filterMenu('otros')">🍟 Otros platos</button>
+    <button class="tab-btn" onclick="filterMenu('bebidas')">🥤 Bebidas</button>
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+    <!-- PIZZAS -->
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Italiana <span class="menu-card-badge">⭐ N°1</span></div>
+      <div class="menu-card-desc">Queso mozzarella, churrasco, tomate y palta.</div>
+      <div class="menu-card-price">$13.500</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Tres Carnes Colombiana</div>
+      <div class="menu-card-desc">Queso mozzarella, churrasco, carne molida y tocino.</div>
+      <div class="menu-card-price">$13.500</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Barros Luco</div>
+      <div class="menu-card-desc">Queso mozzarella y churrasco.</div>
+      <div class="menu-card-price">$13.500</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Chacarera</div>
+      <div class="menu-card-desc">Queso mozzarella, churrasco, poroto verde, tomate y ají verde.</div>
+      <div class="menu-card-price">$13.500</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Florentina</div>
+      <div class="menu-card-desc">Doble queso mozzarella, orégano, pepperoni y rúcula.</div>
+      <div class="menu-card-price">$13.100</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Bogotana</div>
+      <div class="menu-card-desc">Queso mozzarella, carne molida, champiñón y salame.</div>
+      <div class="menu-card-price">$13.100</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza de Pollo con Champiñones</div>
+      <div class="menu-card-desc">Queso mozzarella, pollo y champiñón.</div>
+      <div class="menu-card-price">$12.900</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Cuatro Continentes <span class="menu-card-badge">Popular</span></div>
+      <div class="menu-card-desc">Queso mozzarella, champiñón, salame y aceitunas.</div>
+      <div class="menu-card-price">$12.800</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Hawaina</div>
+      <div class="menu-card-desc">Queso mozzarella, piña y jamón.</div>
+      <div class="menu-card-price">$12.800</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Española</div>
+      <div class="menu-card-desc">Queso mozzarella, chorizo, pimentón y orégano.</div>
+      <div class="menu-card-price">$12.800</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Chilena</div>
+      <div class="menu-card-desc">Queso mozzarella, carne molida, tomate, cebolla y aceituna.</div>
+      <div class="menu-card-price">$12.800</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Mi Tierra</div>
+      <div class="menu-card-desc">Queso mozzarella, aceitunas, champiñón, choclo y salame.</div>
+      <div class="menu-card-price">$12.800</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza de la Casa</div>
+      <div class="menu-card-desc">Queso mozzarella, salchicha, champiñón, pimentón y cebolla.</div>
+      <div class="menu-card-price">$12.600</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Margarita</div>
+      <div class="menu-card-desc">Queso mozzarella, aceitunas, jamón y tomate.</div>
+      <div class="menu-card-price">$12.600</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Vegetariana</div>
+      <div class="menu-card-desc">Queso mozzarella, champiñón, pimentón, cebolla y aceituna.</div>
+      <div class="menu-card-price">$12.600</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Antioqueña</div>
+      <div class="menu-card-desc">Queso mozzarella y salame.</div>
+      <div class="menu-card-price">$12.300</div>
+    </div>
+    <div class="menu-card visible" data-cat="pizzas">
+      <div class="menu-card-icon">🍕</div>
+      <div class="menu-card-name">Pizza Napolitana</div>
+      <div class="menu-card-desc">Queso mozzarella y tomate.</div>
+      <div class="menu-card-price">$12.000</div>
+    </div>
+
+    <!-- HAMBURGUESAS -->
+    <div class="menu-card" data-cat="hamburguesas">
+      <div class="menu-card-icon">🍔</div>
+      <div class="menu-card-name">Hamburguesa Doble Tocino</div>
+      <div class="menu-card-desc">Doble tocino y doble cheddar. Una hamburguesa de carácter.</div>
+      <div class="menu-card-price">$7.900</div>
+    </div>
+    <div class="menu-card" data-cat="hamburguesas">
+      <div class="menu-card-icon">🍔</div>
+      <div class="menu-card-name">Hamburguesas Mastodonte</div>
+      <div class="menu-card-desc">La hamburguesa grande de la casa, con generosas porciones.</div>
+      <div class="menu-card-price">Consultar</div>
+    </div>
+
+    <!-- SANDWICHES -->
+    <div class="menu-card" data-cat="sandwiches">
+      <div class="menu-card-icon">🥖</div>
+      <div class="menu-card-name">Sándwich Churrasco Italiano <span class="menu-card-badge">Top 3</span></div>
+      <div class="menu-card-desc">Pan frica, churrasco, tomate, palta y mayo.</div>
+      <div class="menu-card-price">$8.800</div>
+    </div>
+    <div class="menu-card" data-cat="sandwiches">
+      <div class="menu-card-icon">🥖</div>
+      <div class="menu-card-name">Sándwiches variados</div>
+      <div class="menu-card-desc">Consulta nuestra selección del día en local.</div>
+      <div class="menu-card-price">Desde $7.500</div>
+    </div>
+
+    <!-- OTROS -->
+    <div class="menu-card" data-cat="otros">
+      <div class="menu-card-icon">🍟</div>
+      <div class="menu-card-name">Chorrillana <span class="menu-card-badge">⭐ Favorita</span></div>
+      <div class="menu-card-desc">Papas fritas, carne, cebolla, chorizo, tocino y huevo frito.</div>
+      <div class="menu-card-price">$9.400</div>
+    </div>
+    <div class="menu-card" data-cat="otros">
+      <div class="menu-card-icon">🥩</div>
+      <div class="menu-card-name">Churrascos</div>
+      <div class="menu-card-desc">Churrasco a la plancha con guarnición. Pregunta por las opciones del día.</div>
+      <div class="menu-card-price">Consultar</div>
+    </div>
+    <div class="menu-card" data-cat="otros">
+      <div class="menu-card-icon">🫓</div>
+      <div class="menu-card-name">Empanadas Colombianas</div>
+      <div class="menu-card-desc">Empanadas tradicionales hechas con receta auténtica colombiana.</div>
+      <div class="menu-card-price">Consultar</div>
+    </div>
+
+    <!-- BEBIDAS -->
+    <div class="menu-card" data-cat="bebidas">
+      <div class="menu-card-icon">🥤</div>
+      <div class="menu-card-name">Jugos Naturales Colombianos</div>
+      <div class="menu-card-desc">Jugos frescos con frutas colombianas y chilenas. Sabores del trópico.</div>
+      <div class="menu-card-price">Consultar</div>
+    </div>
+    <div class="menu-card" data-cat="bebidas">
+      <div class="menu-card-icon">🍺</div>
+      <div class="menu-card-name">Cervezas</div>
+      <div class="menu-card-desc">Selección de cervezas frías. La combinación perfecta con tu pizza.</div>
+      <div class="menu-card-price">Consultar</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div>
+    <p class="section-label">Encuéntranos</p>
+    <h2 class="section-title">Visítanos</h2>
+    <p class="section-body">Estamos en el centro de El Monte, listos para recibirte con los mejores sabores colombianos.</p>
+
+    <div class="contact-items">
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Dirección</div>
+          <div class="contact-value">Los Carrera 330, El Monte<br>Región Metropolitana, Chile</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-label">Teléfono</div>
+          <div class="contact-value"><a href="tel:+56956360306">+56 9 5636 0306</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="mailto:Pizzacolombianaelmonte@gmail.com">Pizzacolombianaelmonte@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕛</div>
+        <div>
+          <div class="contact-label">Horario</div>
+          <div class="contact-value">Abrimos a partir de las 12:00 PM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <p class="section-label">Horarios</p>
+    <h2 class="section-title" style="font-size:2.5rem;">Cuando<br>Visitarnos</h2>
+    <div class="horario-table">
+      <div class="horario-row">
+        <span class="dia">Lunes – Jueves</span>
+        <span class="hora">12:00 – 22:30</span>
+      </div>
+      <div class="horario-row">
+        <span class="dia">Viernes</span>
+        <span class="hora">12:00 – 23:30</span>
+      </div>
+      <div class="horario-row">
+        <span class="dia">Sábado</span>
+        <span class="hora">12:00 – 23:30</span>
+      </div>
+      <div class="horario-row">
+        <span class="dia">Domingo</span>
+        <span class="hora">12:00 – 22:30</span>
+      </div>
+    </div>
+    <br>
+    <a href="https://www.instagram.com/elmonte_pizzacolombiana" target="_blank" class="btn-primary" style="display:inline-block; margin-top:8px;">
+      📸 Síguenos en Instagram
+    </a>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section id="instagram">
+  <p class="section-label">Redes Sociales</p>
+  <h2 class="section-title" style="color:var(--blanco);">@elmonte_<br>pizzacolombiana</h2>
+
+  <div class="insta-grid">
+    <div class="insta-tile">🍕</div>
+    <div class="insta-tile">🍔</div>
+    <div class="insta-tile">🥤</div>
+    <div class="insta-tile">🍟</div>
+    <div class="insta-tile">🥩</div>
+    <div class="insta-tile">🫓</div>
+    <div class="insta-tile">🍺</div>
+    <div class="insta-tile">❤️</div>
+  </div>
+
+  <a href="https://www.instagram.com/elmonte_pizzacolombiana" target="_blank" class="insta-btn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    Ver nuestro Instagram
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Pizza Colombiana · El Monte</div>
+  <div class="footer-text">Los Carrera 330, El Monte · +56 9 5636 0306</div>
+  <div class="footer-text">© 2025 Pizza Colombiana. Todos los derechos reservados.</div>
+</footer>
+
+<script>
+  function filterMenu(cat) {
+    // Update tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // Show/hide cards
+    document.querySelectorAll('.menu-card').forEach(card => {
+      if (card.dataset.cat === cat) {
+        card.classList.add('visible');
+      } else {
+        card.classList.remove('visible');
+      }
+    });
+  }
+
+  // Highlight "today" in schedule
+  const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const today = days[new Date().getDay()];
+  document.querySelectorAll('.horario-row').forEach(row => {
+    if (row.querySelector('.dia').textContent.includes(today)) {
+      row.classList.add('hoy');
+    }
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animation = 'fadeUp 0.6s ease both';
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.menu-card, .contact-item, .stat-card').forEach(el => {
+    el.style.opacity = '0';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
